@@ -78,8 +78,8 @@ bool AutoLabelingTool::AutoLabelingToolImpl::InitModel(const std::wstring &strMo
 				rel_trt_options.get()));*/
 		}
 
-		std::wstring strPreModelPath = strModelPath + L"\\ENCODER.onnx";
-		sessionPre = Ort::Session(env, strPreModelPath.c_str(), sessionOptions);
+		//std::wstring strPreModelPath = strModelPath + L"\\ENCODER.onnx";
+		//sessionPre = Ort::Session(env, strPreModelPath.c_str(), sessionOptions);
 		std::wstring strPointModelPath = strModelPath + L"\\DECODER_POINT.onnx";
 		sessionPoint = Ort::Session(env, strPointModelPath.c_str(), sessionOptions);
 
