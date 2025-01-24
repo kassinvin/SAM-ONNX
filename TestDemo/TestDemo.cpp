@@ -19,20 +19,21 @@ void testDemo()
 	std::vector<std::wstring> vImagePath;
 	vImagePath.emplace_back(L"..\\data\\truck.jpg");
 
-	std::vector<std::vector<float>> vvImageCache;
+	// std::vector<std::vector<float>> vvImageCache;
 
-	bSuccess = m_tool.PreProcess(vvImageCache, vImagePath);
-	if (!bSuccess)
-	{
-		std::cout << "PreProcess error!" << std::endl;
-		return;
-	}
+	// bSuccess = m_tool.PreProcess(vvImageCache, vImagePath);
+	// if (!bSuccess)
+	// {
+	// 	std::cout << "PreProcess error!" << std::endl;
+	// 	return;
+	// }
 
 	std::vector<LabelPoint> pts;
 
 	pts.push_back(LabelPoint(1, 500, 375));
-	std::vector<float> vMaskCache;
-	bSuccess = m_tool.Execute(vMaskCache, vvImageCache[0], pts, std::pair<int, int> {1800, 1200});
+	std::vector<float> vMaskCache, vImageCache(1048576);
+	// bSuccess = m_tool.Execute(vMaskCache, vvImageCache[0], pts, std::pair<int, int> {1800, 1200});
+	bSuccess = m_tool.Execute(vMaskCache, vImageCache, pts, std::pair<int, int> {1800, 1200});
 
 	if (!bSuccess)
 	{
