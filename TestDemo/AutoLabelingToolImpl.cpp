@@ -21,16 +21,16 @@ std::tuple<int, int> GetPreProcessShape(int old_h, int old_w, int long_side_leng
 AutoLabelingTool::AutoLabelingToolImpl::AutoLabelingToolImpl()
 {
 	m_bModelLoaded = false;
-	imageEmbeddingValue = nullptr;
+	//imageEmbeddingValue = nullptr;
 }
 
 AutoLabelingTool::AutoLabelingToolImpl::~AutoLabelingToolImpl()
 {
-	if (imageEmbeddingValue != nullptr)
+	/*if (imageEmbeddingValue != nullptr)
 	{
 		delete[] imageEmbeddingValue;
 		imageEmbeddingValue = nullptr;
-	}
+	}*/
 	
 }
 
@@ -94,14 +94,14 @@ bool AutoLabelingTool::AutoLabelingToolImpl::InitModel(const std::wstring &strMo
 		output_tensorPre = Ort::Value::CreateTensor<float>(memoryInfo, outputTensorValuesPre.data(), outputTensorValuesPre.size(),
 			outputShapePre.data(), outputShapePre.size());
 
-		if (imageEmbeddingValue == nullptr)
+		/*if (imageEmbeddingValue == nullptr)
 		{
 			imageEmbeddingValue = new float[1048576];
 			if (imageEmbeddingValue == nullptr)
 			{
 				return false;
 			}
-		}
+		}*/
 		
 
 		m_bModelLoaded = true;
@@ -312,6 +312,9 @@ bool AutoLabelingTool::AutoLabelingToolImpl::ExecuteSAM(std::vector<float> &vMas
 
 	float* blob_x = nullptr;
 	float* blob_y = nullptr;
+
+	float imageEmbeddingValue[1048576];
+	//float* imageEmbeddingValue = new float[1048576]; //not work
 	
 	std::transform(vImageCache.begin(), vImageCache.end(), imageEmbeddingValue, [](const float x)
 	{
