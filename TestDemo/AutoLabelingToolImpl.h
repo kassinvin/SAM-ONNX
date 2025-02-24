@@ -44,7 +44,7 @@ private:
 	std::vector<float> outputTensorValuesPre, inputTensorValuesPre;
 	Ort::Value input_tensorPre{ nullptr }, output_tensorPre{ nullptr };
 
-	float *imageEmbeddingValue;
+	//float *imageEmbeddingValue;
 
 	bool PreProcessImage(const cv::Mat &imgInput, const int nBatchNum, const int nBatchSize);
 
