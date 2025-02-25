@@ -87,6 +87,8 @@ bool AutoLabelingTool::AutoLabelingToolImpl::InitModel(const std::wstring &strMo
 		inputShapePre = { m_nBatchSize, 3, 1024, 1024 };
 		outputShapePre = { m_nBatchSize, 256, 64, 64 };
 
+		Ort::MemoryInfo memoryInfo{ Ort::MemoryInfo::CreateCpu(OrtArenaAllocator, OrtMemTypeDefault) };
+
 		inputTensorValuesPre.resize(inputShapePre[0] * inputShapePre[1] * inputShapePre[2] * inputShapePre[3]);
 		outputTensorValuesPre.resize(outputShapePre[0] * outputShapePre[1] * outputShapePre[2] * outputShapePre[3]);
 		input_tensorPre = Ort::Value::CreateTensor<float>(memoryInfo, inputTensorValuesPre.data(), inputTensorValuesPre.size(),
@@ -321,6 +323,7 @@ bool AutoLabelingTool::AutoLabelingToolImpl::ExecuteSAM(std::vector<float> &vMas
 		return x;
 	});
 
+	Ort::MemoryInfo memoryInfo{ Ort::MemoryInfo::CreateCpu(OrtArenaAllocator, OrtMemTypeDefault) };
 	inputTensorsSam.push_back(Ort::Value::CreateTensor<float>(
 		memoryInfo, imageEmbeddingValue, 1048576,
 		inputEmbeddingShape.data(), inputEmbeddingShape.size()));
