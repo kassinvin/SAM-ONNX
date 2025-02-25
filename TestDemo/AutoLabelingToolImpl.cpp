@@ -104,7 +104,18 @@ bool AutoLabelingTool::AutoLabelingToolImpl::InitModel(const std::wstring &strMo
 				return false;
 			}
 		}*/
-		
+
+		outputShapeMask = { 1, 4, 1200, 1800 }, outputShapeIOU = { 1, 4 }, outputShapeLow = { 1, 4, 256, 256 };
+		outputTensorValuesMask = new float[outputShapeMask[0] * outputShapeMask[1] * outputShapeMask[2] * outputShapeMask[3]];
+		outputTensorValuesIOU = new float[outputShapeIOU[0] * outputShapeIOU[1]];
+		outputTensorValuesLow = new float[outputShapeLow[0] * outputShapeLow[1] * outputShapeLow[2] * outputShapeLow[3]];
+
+		outputTensorsSam[0] = (Ort::Value::CreateTensor<float>(memoryInfo, outputTensorValuesMask, outputShapeMask[0] * outputShapeMask[1] * outputShapeMask[2] * outputShapeMask[3],
+			outputShapeMask.data(), outputShapeMask.size()));
+		outputTensorsSam[1] = (Ort::Value::CreateTensor<float>(memoryInfo, outputTensorValuesIOU, outputShapeIOU[0] * outputShapeIOU[1],
+			outputShapeIOU.data(), outputShapeIOU.size()));
+		outputTensorsSam[2] = (Ort::Value::CreateTensor<float>(memoryInfo, outputTensorValuesLow, outputShapeLow[0] * outputShapeLow[1] * outputShapeLow[2] * outputShapeLow[3],
+			outputShapeLow.data(), outputShapeLow.size()));
 
 		m_bModelLoaded = true;
 	}
@@ -414,14 +425,27 @@ bool AutoLabelingTool::AutoLabelingToolImpl::ExecuteSAM(std::vector<float> &vMas
 
 
 	Ort::RunOptions runOptionsSam;
-	std::vector<Ort::Value> outputTensorsSam;
+	//std::vector<Ort::Value> outputTensorsSam;
 	if (bRect)//Box
 	{
 		
 	}
 	else//Point
 	{
-		outputTensorsSam = sessionPoint.Run(runOptionsSam, inputNamesSam, inputTensorsSam.data(),
+		Ort::IoBinding io_binding{ sessionPoint };
+		io_binding.BindInput(inputNamesSam[0], inputTensorsSam[0]);
+		io_binding.BindInput(inputNamesSam[1], inputTensorsSam[1]);
+		io_binding.BindInput(inputNamesSam[2], inputTensorsSam[2]);
+		io_binding.BindInput(inputNamesSam[3], inputTensorsSam[3]);
+		io_binding.BindInput(inputNamesSam[4], inputTensorsSam[4]);
+		io_binding.BindInput(inputNamesSam[5], inputTensorsSam[5]);
+		io_binding.BindOutput(outputNamesSam[0], outputTensorsSam[0]);
+		io_binding.BindOutput(outputNamesSam[1], outputTensorsSam[1]);
+		io_binding.BindOutput(outputNamesSam[2], outputTensorsSam[2]);
+
+		sessionPoint.Run(runOptionsSam, io_binding);
+		
+		//outputTensorsSam = sessionPoint.Run(runOptionsSam, inputNamesSam, inputTensorsSam.data(),
 			inputTensorsSam.size(), outputNamesSam, 3);
 
 		//sessionPoint.Run(runOptionsSam, inputNamesSam, inputTensorsSam.data(), 6, outputNamesSam, outputTensorsSam.data(), 3);
