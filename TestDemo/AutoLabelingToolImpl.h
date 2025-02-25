@@ -28,7 +28,7 @@ private:
 	Ort::SessionOptions sessionOptions{ nullptr };
 	Ort::Session sessionPre{ nullptr }, sessionPoint{ nullptr };
 
-	Ort::MemoryInfo memoryInfo{ Ort::MemoryInfo::CreateCpu(OrtArenaAllocator, OrtMemTypeDefault) };
+	//Ort::MemoryInfo memoryInfo{ Ort::MemoryInfo::CreateCpu(OrtArenaAllocator, OrtMemTypeDefault) };
 
 	const char *inputNamesSam[6]{ "image_embeddings", "point_coords",   "point_labels",
 						 "mask_input",       "has_mask_input", "orig_im_size" },
