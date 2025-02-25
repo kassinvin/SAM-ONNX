@@ -44,6 +44,11 @@ private:
 	std::vector<float> outputTensorValuesPre, inputTensorValuesPre;
 	Ort::Value input_tensorPre{ nullptr }, output_tensorPre{ nullptr };
 
+	Ort::Value outputTensorsSam[3]{ (Ort::Value)nullptr,(Ort::Value)nullptr,(Ort::Value)nullptr };
+
+	std::vector<int64_t> outputShapeMask, outputShapeIOU, outputShapeLow;
+	float* outputTensorValuesMask{ nullptr }, *outputTensorValuesIOU{ nullptr }, *outputTensorValuesLow{ nullptr };
+
 	//float *imageEmbeddingValue;
 
 	bool PreProcessImage(const cv::Mat &imgInput, const int nBatchNum, const int nBatchSize);
